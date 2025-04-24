@@ -5,7 +5,7 @@ import os
 import ollama
 import time
 
-# --- 설정값 ---
+# 설정값
 DRIVER_KEYWORDS = {
     1: ["반려동물", "게임", "SNS"],
     2: ["마피아", "액션 영화", "뱀파이어 이야기"],
@@ -36,7 +36,7 @@ DRIVER_PERSONALITY = {
     }
 }
 
-# --- LLM 응답 처리 ---
+# LLM 응답 처리
 def ask_llm(driver_num, story):
     keywords = DRIVER_KEYWORDS[driver_num]
     personality = DRIVER_PERSONALITY[driver_num]
@@ -73,7 +73,7 @@ def generate_next_story(driver_num):
 '''
     response = ollama.chat(model='eeve-korean-10.8b', messages=[{"role": "user", "content": prompt}])
     result = response['message']['content'].strip()
-    # 제목과 이야기만 추출해서 반환
+    
     if "제목:" in result and "이야기:" in result:
         try:
             title = result.split("제목:")[1].split("\n")[0].strip()
@@ -83,7 +83,7 @@ def generate_next_story(driver_num):
             return result
     return result
 
-# --- 상태 초기화 ---
+# 상태 초기화
 if "initialized" not in st.session_state:
     st.session_state.initialized = True
     st.session_state.driver_num = random.randint(1, 4)
@@ -94,7 +94,7 @@ if "initialized" not in st.session_state:
     st.session_state.story_selected = False
     st.session_state.pending_reaction = ""
 
-# --- 페이지 설정 ---
+# 페이지 설정
 st.set_page_config(page_title="지옥할증택시", layout="centered")
 page = st.sidebar.radio("페이지 이동", ["🚗게임 방법 보기", "💀게임 시작하기"])
 
@@ -156,7 +156,7 @@ elif page == "💀게임 시작하기":
                 st.session_state.selected_story = story
                 st.session_state.story_selected = True
 
-        # 이야기 선택 후: 기사 반응 + 다음 이야기 버튼 등장
+        # 이야기 선택 후 -> 기사 반응 + 다음 이야기 버튼 등장
         if st.session_state.story_selected:
             # 선택한 이야기의 기사 번호 찾기
             selected_story = st.session_state.selected_story
